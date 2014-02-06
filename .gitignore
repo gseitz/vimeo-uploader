@@ -1,0 +1,4 @@
+.cabal-sandbox
+.vuprc
+dist
+cabal.sandbox.config
