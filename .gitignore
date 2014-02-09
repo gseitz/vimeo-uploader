@@ -2,3 +2,4 @@
 .vuprc
 dist
 cabal.sandbox.config
+tags
