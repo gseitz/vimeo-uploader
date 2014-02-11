@@ -9,6 +9,8 @@ import           Control.Monad.Reader
 import           Data.Data
 import           System.Console.CmdArgs
 
+import           Prelude                hiding (quot)
+
 import           Vimeo.API
 import           Vimeo.OAuth
 import           Vimeo.Types
