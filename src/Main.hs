@@ -15,19 +15,26 @@ import           Vimeo.Types
 import           Vimeo.Upload
 
 data VUP = Upload { file :: FilePath, debug :: Bool }
-         | Quota  { debug :: Bool }
+         | Quota  { short :: Bool, debug :: Bool }
     deriving (Data,Typeable,Show)
 
 upload :: VUP
 upload = Upload { file = def, debug = False }
 
 quota :: VUP
-quota = Quota False &= auto
+quota = Quota False False &= auto
 
-printQuota :: OAuthM ()
-printQuota = do
+printQuota :: Bool -> OAuthM ()
+printQuota s = do
     resp <- getQuota
-    liftIO $ print resp
+    liftIO $ putStrLn $ case resp of
+        Left parseError -> "Error parsing response: " ++ parseError
+        Right quotaMsg -> either show msg $ rspErrorOrMsg quotaMsg
+  where
+    msg quot = if s
+        then (show . usFree . qrUploadSpace) quot
+        else let intprint f = (show.f.qrUploadSpace) quot
+             in "Total: " ++ intprint usMax ++ "\nUsed: " ++ intprint usUsed ++ "\nFree: "++ intprint usFree
 
 runUpload :: FilePath -> OAuthM ()
 runUpload videoFile = do
@@ -57,6 +64,6 @@ main = do
     let (dbg, action) = command cmd
     void $ runReaderT action (cfg|+dbg)
   where
-    command (Quota dbg) = (dbg, printQuota)
+    command (Quota s dbg) = (dbg, printQuota s)
     command (Upload f dbg) = (dbg, runUpload f)
     (a,b) |+ c = (a,b,c)
