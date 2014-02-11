@@ -16,9 +16,9 @@ data ResponseInfo a = ResponseInfo
     } deriving Show
 
 data VimeoError = VimeoError
-    { code :: Int
-    , msg  :: String
-    , expl :: Maybe String
+    { veCode :: Int
+    , veMsg  :: String
+    , veExpl :: Maybe String
     } deriving (Show, Generic)
 
 data Status = Ok | Fail deriving Show
