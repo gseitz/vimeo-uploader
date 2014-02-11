@@ -36,7 +36,9 @@ printQuota s = do
     msg quot = if s
         then (show . usFree . qrUploadSpace) quot
         else let intprint f = (show.f.qrUploadSpace) quot
-             in "Total: " ++ intprint usMax ++ "\nUsed: " ++ intprint usUsed ++ "\nFree: "++ intprint usFree
+             in "Total: " ++ intprint usMax ++
+                "\nUsed: " ++ intprint usUsed ++
+                "\nFree: "++ intprint usFree
 
 runUpload :: FilePath -> OAuthM ()
 runUpload videoFile = do
