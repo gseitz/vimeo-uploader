@@ -21,7 +21,7 @@ data VUP = Upload { file :: FilePath, debug :: Bool }
     deriving (Data,Typeable,Show)
 
 upload :: VUP
-upload = Upload { file = def, debug = False }
+upload = Upload { file = def &= argPos 0, debug = False }
 
 quota :: VUP
 quota = Quota False False &= auto
